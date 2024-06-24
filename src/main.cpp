@@ -19,7 +19,7 @@ void setup()
 {
   cli();
   Serial.begin(9600);
-  Serial.println("Hello world!");
+  Serial.println(F("Hello world!"));
   // Initialize the display
   oled.begin();
   oled.setFont();
@@ -59,7 +59,7 @@ ISR(TIMER1_COMPA_vect)
   readings[count] = analogRead(micIn);
 
   // Test old reading within bounds and erase
-   if (((old_readings[count] * SCREEN_HEIGHT) / 1024) > 7 && ((old_readings[count] * SCREEN_HEIGHT) / 1024) < 114)
+  if (((old_readings[count] * SCREEN_HEIGHT) / 1024) > 7 && ((old_readings[count] * SCREEN_HEIGHT) / 1024) < 114)
   {
     oled.drawPixel(count, ((old_readings[count] * SCREEN_HEIGHT) / 1024), Black);
   }
