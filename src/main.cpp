@@ -12,7 +12,6 @@
 volatile int readings[SCREEN_WIDTH];
 volatile int old_readings[SCREEN_WIDTH];
 
-bool displayFlag = true;
 const int timerperiod = 10;
 
 void setup()
