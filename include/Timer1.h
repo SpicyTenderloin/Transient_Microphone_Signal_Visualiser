@@ -21,3 +21,5 @@ void timer1init(uint32_t micros)
     // enable timer compare interrupt
     TIMSK1 |= (1 << OCIE1A);
 }
+
+// :P
