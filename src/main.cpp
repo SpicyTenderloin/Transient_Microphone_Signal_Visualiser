@@ -10,7 +10,6 @@
 
 // Initialise array to store samples
 volatile int readings[SCREEN_WIDTH];
-volatile int old_readings[SCREEN_WIDTH];
 
 const int timerperiod = 10;
 
@@ -45,7 +44,7 @@ void loop()
 {
   // Uncomment to calibrate microphone
   // cli();
-  //  estimateDCoffset(1000);
+  // estimateDCoffset(1000);
 }
 
 // Timer1 ISR
@@ -53,22 +52,21 @@ ISR(TIMER1_COMPA_vect)
 {
   // Counter to keep track of position in readings array
   static int count = 0;
-  // Cycle readings (new > old)
-  old_readings[count] = readings[count];
-  readings[count] = analogRead(micIn);
 
   // Test old reading within bounds and erase
-  if (((old_readings[count] * SCREEN_HEIGHT) / 1024) > 7 && ((old_readings[count] * SCREEN_HEIGHT) / 1024) < 114)
+  if (((readings[count] * SCREEN_HEIGHT) / 1024) > 7 && ((readings[count] * SCREEN_HEIGHT) / 1024) < 114)
   {
-    oled.drawPixel(count, ((old_readings[count] * SCREEN_HEIGHT) / 1024), Black);
+    oled.drawPixel(count, ((readings[count] * SCREEN_HEIGHT) / 1024), Black);
   }
+  // Measure new reading
+  readings[count] = analogRead(micIn);
 
   // Test new reading within bounds and print
   if (((readings[count] * SCREEN_HEIGHT) / 1024) > 7 && ((readings[count] * SCREEN_HEIGHT) / 1024) < 114)
   {
     oled.drawPixel(count, ((readings[count] * SCREEN_HEIGHT) / 1024), White);
   }
-  count = (count + 1) % SCREEN_WIDTH; // Wrap around count1
+  count = (count + 1) % SCREEN_WIDTH; // Wrap around
 }
 
 // OPTIONAL Second Timer
