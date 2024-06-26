@@ -15,28 +15,26 @@ const int timerperiod = 10;
 
 void setup()
 {
-  cli();
   Serial.begin(9600);
   Serial.println(F("Hello world!"));
+
   // Initialize the display
-  oled.begin();
-  oled.setFont();
+  oledInit();
+
+  // Calculate DC offset
+  estimateDCoffset(300);
+  delay(2000);
+
+  // Draw Background
   oled.fillScreen(Black);
-  oled.setTextColor(White);
-  oled.setTextSize(1);
-  oled.enableDisplay(1);
-  // Configure Timer 1 to trigger every 333 microseconds for 3kHz
+  drawBackground();
+
+  // Configure Timer 1 to trigger every 10 microseconds for 100kHz
   timer1init(timerperiod);
+
+  // Optional Second Timer
   // Timer2init();
 
-  oled.setCursor(1, 1);
-  oled.print("5V     Transient");
-  oled.setCursor(1, 121);
-  oled.print("0V");
-  oled.setCursor(40, 121);
-  oled.print("Fs:");
-  oled.print((1 / (timerperiod * 1e-3)));
-  oled.print(" kHz");
   Serial.println("Init Complete");
   sei();
 }
