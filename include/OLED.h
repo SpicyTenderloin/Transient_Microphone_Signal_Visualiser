@@ -50,7 +50,7 @@ void drawBackground(void)
     oled.print("5V     Transient");
     oled.setCursor(1, 121);
     oled.print("0V");
-    oled.setCursor(40, 121);
+    oled.setCursor(50, 121);
     oled.print("Fs:");
     oled.print((1 / (timerperiod * 1e-3)));
     oled.print(" kHz");

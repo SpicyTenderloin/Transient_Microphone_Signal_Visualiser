@@ -11,7 +11,7 @@
 // Initialise array to store samples
 volatile int readings[SCREEN_WIDTH];
 
-const int timerperiod = 10;
+const int timerperiod = 100;
 
 void setup()
 {
@@ -54,7 +54,7 @@ ISR(TIMER1_COMPA_vect)
   // Test old reading within bounds and erase
   if (((readings[count] * SCREEN_HEIGHT) / 1024) > 7 && ((readings[count] * SCREEN_HEIGHT) / 1024) < 114)
   {
-    oled.drawPixel(count, ((readings[count] * SCREEN_HEIGHT) / 1024), Black);
+    oled.drawPixel(count, SCREEN_HEIGHT - ((readings[count] * SCREEN_HEIGHT) / 1024), Black);
   }
   // Measure new reading
   readings[count] = analogRead(micIn);
@@ -62,7 +62,7 @@ ISR(TIMER1_COMPA_vect)
   // Test new reading within bounds and print
   if (((readings[count] * SCREEN_HEIGHT) / 1024) > 7 && ((readings[count] * SCREEN_HEIGHT) / 1024) < 114)
   {
-    oled.drawPixel(count, ((readings[count] * SCREEN_HEIGHT) / 1024), White);
+    oled.drawPixel(count, SCREEN_HEIGHT - ((readings[count] * SCREEN_HEIGHT) / 1024), White);
   }
   count = (count + 1) % SCREEN_WIDTH; // Wrap around
 }
