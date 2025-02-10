@@ -11,7 +11,7 @@
 // Initialise array to store samples
 volatile int readings[SCREEN_WIDTH];
 
-const int timerperiod = 100;
+const int SampleFrequency = 4.4e3; // kHz
 
 void setup()
 {
@@ -30,7 +30,7 @@ void setup()
   drawBackground();
 
   // Configure Timer 1 to trigger every 10 microseconds for 100kHz
-  timer1init(timerperiod);
+  timer1init(SampleFrequency);
 
   // Optional Second Timer
   // Timer2init();
@@ -64,10 +64,11 @@ ISR(TIMER1_COMPA_vect)
   {
     oled.drawPixel(count, SCREEN_HEIGHT - ((readings[count] * SCREEN_HEIGHT) / 1024), White);
   }
-  count = (count + 1) % SCREEN_WIDTH; // Wrap around
+  // Increment counter, reset to zero after 128
+  count = (count + 1) % SCREEN_WIDTH;
 }
 
-// OPTIONAL Second Timer
+// OPTIONAL Second Timer - Currently unused
 
 // // Timer 0 ISR
 // ISR(TIMER0_COMPA_vect)

@@ -1,4 +1,4 @@
-#define micIn A0
+#define micIn A1
 #include <Adafruit_SSD1351.h>
 #include <Adafruit_GFX.h>
 
