@@ -1,4 +1,4 @@
-#include <Arduino.h>
+#include <stdio.h>
 #include <Adafruit_SSD1351.h>
 #include <Adafruit_GFX.h>
 #include <SPI.h>
@@ -6,12 +6,7 @@
 #include "Microphone.h"
 #include "OLED.h"
 #include "Timer1.h"
-#include "Timer2.h"
-
-// Initialise array to store samples
-volatile int readings[SCREEN_WIDTH];
-
-const int SampleFrequency = 4.4e3; // kHz
+#include "VU_Meter.h"
 
 void setup()
 {
@@ -21,9 +16,13 @@ void setup()
   // Initialize the display
   oledInit();
 
+  // Initialise VU meter
+  VUInit();
+  digitalWrite(Level1, HIGH);
+  
   // Calculate DC offset
-  estimateDCoffset(300);
-  delay(2000);
+  DCOffset = estimateDCoffset(100);
+  delay(500);
 
   // Draw Background
   oled.fillScreen(Black);
@@ -32,17 +31,12 @@ void setup()
   // Configure Timer 1 to trigger every 10 microseconds for 100kHz
   timer1init(SampleFrequency);
 
-  // Optional Second Timer
-  // Timer2init();
-
   Serial.println("Init Complete");
   sei();
 }
 void loop()
 {
-  // Uncomment to calibrate microphone
-  // cli();
-  // estimateDCoffset(1000);
+  VUupdate();
 }
 
 // Timer1 ISR
@@ -67,16 +61,3 @@ ISR(TIMER1_COMPA_vect)
   // Increment counter, reset to zero after 128
   count = (count + 1) % SCREEN_WIDTH;
 }
-
-// OPTIONAL Second Timer - Currently unused
-
-// // Timer 0 ISR
-// ISR(TIMER0_COMPA_vect)
-// {
-//     timer0_ticks++;
-//     if (timer0_ticks >= 2)
-//     { // 2 ticks * 0.5 seconds = 1 second
-//         timer2flag = true;
-//         timer0_ticks = 0; // Reset the tick counter
-//     }
-// }
