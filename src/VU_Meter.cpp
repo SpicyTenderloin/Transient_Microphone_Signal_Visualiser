@@ -30,20 +30,76 @@ void VUupdate(void)
         lastUpdateMillis = currentMillis;
 
         int maxRead = 0;
-        int minRead = 1024;
         for (int i = 0; i < (SCREEN_WIDTH); i++)
         {
             if (readings[i] > maxRead)
             {
                 maxRead = readings[i];
             }
-
-            if (readings[i] < minRead)
-            {
-                minRead = readings[i];
-            }
         }
-        int VUlevel = ceil((abs(maxRead - DCOffset) * 12.0) / 512.0);
+        // int VUlevel = ceil((abs(maxRead - DCOffset) * 12.0) / 512.0);
+
+        uint16_t amplitude = ceil(abs(maxRead - DCOffset));
+        uint8_t VUlevel;
+
+        // Map VU level to an parabolic curve (y=2.27x^2)
+        if (amplitude <= 32)
+        {
+            VUlevel = 0;
+        }
+        else if (amplitude > 32 && amplitude <= 50)
+        {
+            VUlevel = 1;
+        }
+        else if (amplitude > 50 && amplitude <= 72)
+        {
+            VUlevel = 2;
+        }
+        else if (amplitude > 72 && amplitude <= 98)
+        {
+            VUlevel = 3;
+        }
+        else if (amplitude > 98 && amplitude <= 128)
+        {
+            VUlevel = 4;
+        }
+        else if (amplitude > 128 && amplitude <= 162)
+        {
+            VUlevel = 5;
+        }
+        else if (amplitude > 162 && amplitude <= 200)
+        {
+            VUlevel = 6;
+        }
+        else if (amplitude > 200 && amplitude <= 242)
+        {
+            VUlevel = 7;
+        }
+        else if (amplitude > 242 && amplitude <= 288)
+        {
+            VUlevel = 8;
+        }
+        else if (amplitude > 288 && amplitude <= 338)
+        {
+            VUlevel = 9;
+        }
+        else if (amplitude > 338 && amplitude <= 392)
+        {
+            VUlevel = 10;
+        }
+        else if (amplitude > 392 && amplitude <= 450)
+        {
+            VUlevel = 11;
+        }
+        else if (amplitude > 450 && amplitude <= 512)
+        {
+            VUlevel = 12;
+        }
+        else
+        {
+            VUlevel = 0;
+        }
+        // Serial.println(VUlevel);
 
         switch (VUlevel)
         {
@@ -61,7 +117,6 @@ void VUupdate(void)
             digitalWrite(Level10, HIGH);
             digitalWrite(Level11, HIGH);
             digitalWrite(Level12, HIGH);
-            Serial.println("FLAG 12");
             break;
 
         case 11:

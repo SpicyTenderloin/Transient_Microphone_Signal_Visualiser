@@ -18,8 +18,7 @@ void setup()
 
   // Initialise VU meter
   VUInit();
-  digitalWrite(Level1, HIGH);
-  
+
   // Calculate DC offset
   DCOffset = estimateDCoffset(100);
   delay(500);

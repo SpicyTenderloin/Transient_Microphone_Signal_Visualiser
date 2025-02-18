@@ -2,7 +2,7 @@
 
 // Timer 1 is in charge of ensuring the microphone signal is sampled at consistent intervals
 // Can be set to sample at 32Hz-200kHz
-// Prescalar of 8 allows for timers between 5 micro seconds 32 milliseconds cor
+// Prescalar of 8 allows for timers between 5 micro seconds 32 milliseconds
 void timer1init(uint32_t Frequency)
 {
     // Set control registers to clear any previous configurations
